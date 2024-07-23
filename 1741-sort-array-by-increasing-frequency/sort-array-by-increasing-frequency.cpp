@@ -1,24 +1,23 @@
 class Solution {
 public:
     vector<int> frequencySort(vector<int>& nums) {
+        vector<int> numToFreq(202);
+        for (int num: nums) {
+            numToFreq[num + 100]++;
+        }
+        vector<vector<int>> freqToNum(101);
+        for (int i = 200; i >= 0; --i) {
+            freqToNum[numToFreq[i]].push_back(i - 100);
+        }
 
-        map<int, int> mp;
-
-        for(int i =0; i<nums.size();i++){
-            if(mp.find(nums[i])==mp.end()){
-                mp[nums[i]]=1;
-            } else {
-                mp[nums[i]]++;
+        vector<int> res; 
+        for (int freq = 1; freq <= 100; ++freq) {
+            for (int num: freqToNum[freq]) {
+                for (int i = 0; i < freq; ++i) {
+                    res.push_back(num);
+                }
             }
         }
-    
-        sort(nums.begin(), nums.end(), [&](int a, int b){
-            if(mp[a]==mp[b]){
-                return a>b;
-            }
-            return mp[a] < mp[b];
-        });
-        return nums;
-        
+        return res;
     }
 };
