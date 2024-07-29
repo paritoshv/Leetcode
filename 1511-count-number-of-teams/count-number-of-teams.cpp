@@ -1,18 +1,22 @@
 class Solution {
 public:
     int numTeams(vector<int>& rating) {
-        int cnt =0;
-        for(int i=0;i<rating.size()-2;i++){
-            for(int j =i+1; j<rating.size()-1;j++){
-                for(int k =j+1; k<rating.size();k++){
-                    if((rating[i] < rating[j] && rating[j] <rating[k]) || 
-                    (rating[i] > rating[j] && rating[j] > rating[k])){
-                        cnt++;
-                    }
-                }  
-            }
+        const int n = rating.size();
+        int cnt= 0;
+        for (int i= 1; i < n-1; i++) {
+            int L[2]={0}, R[2]={0};
+
+            // Count ratings on the left of i
+            for (int j = 0; j < i; j++) 
+                L[rating[j] < rating[i]]++;
+            
+            // Count ratings on the right of i
+            for (int k=i+1; k<n; k++) 
+                R[rating[k] < rating[i]]++;
+
+            // number of valid teams
+            cnt += L[0]*R[1] + L[1]*R[0];
         }
         return cnt;
-        
     }
 };
